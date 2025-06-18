@@ -38,6 +38,7 @@
             ComboBoxAperturaMolinete = new ComboBox();
             BotonOcultarConfig = new Button();
             PanelConfigAdminsitrador = new Panel();
+            checkBox1 = new CheckBox();
             comboBoxNroLector = new ComboBox();
             label3 = new Label();
             botonEditarCredenciales = new Button();
@@ -50,7 +51,6 @@
             BotonIngresarAdmin = new Button();
             button1 = new Button();
             labelBloquearIp = new Label();
-            checkBox1 = new CheckBox();
             tableLayoutPanel1 = new TableLayoutPanel();
             panel1 = new Panel();
             panel2 = new Panel();
@@ -174,18 +174,29 @@
             PanelConfigAdminsitrador.TabIndex = 20;
             PanelConfigAdminsitrador.Visible = false;
             // 
+            // checkBox1
+            // 
+            checkBox1.AutoSize = true;
+            checkBox1.Location = new Point(21, 171);
+            checkBox1.Name = "checkBox1";
+            checkBox1.Size = new Size(86, 19);
+            checkBox1.TabIndex = 31;
+            checkBox1.Text = "Bloquear IP";
+            checkBox1.UseVisualStyleBackColor = true;
+            checkBox1.CheckedChanged += checkBox1_CheckedChanged;
+            // 
             // comboBoxNroLector
             // 
             comboBoxNroLector.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBoxNroLector.FormattingEnabled = true;
             comboBoxNroLector.Items.AddRange(new object[] { "Lector 1", "Lector 2" });
-            comboBoxNroLector.Location = new Point(90, 168);
+            comboBoxNroLector.Location = new Point(155, 171);
             comboBoxNroLector.Name = "comboBoxNroLector";
             comboBoxNroLector.Size = new Size(121, 23);
             comboBoxNroLector.TabIndex = 31;
             comboBoxNroLector.SelectedIndexChanged += comboBoxNroLector_SelectedIndexChanged;
             // 
-            // label
+            // label3
             // 
             label3.AutoSize = true;
             label3.Font = new Font("Segoe UI", 12F);
@@ -305,16 +316,6 @@
             labelBloquearIp.Size = new Size(0, 21);
             labelBloquearIp.TabIndex = 30;
             // 
-            // checkBox1
-            // 
-            checkBox1.AutoSize = true;
-            checkBox1.Location = new Point(21, 171);
-            checkBox1.Name = "checkBox1";
-            checkBox1.Size = new Size(86, 19);
-            checkBox1.TabIndex = 31;
-            checkBox1.Text = "Bloquear IP";
-            checkBox1.UseVisualStyleBackColor = true;
-            checkBox1.CheckedChanged += checkBox1_CheckedChanged;
             // tableLayoutPanel1
             // 
             tableLayoutPanel1.ColumnCount = 2;
@@ -404,6 +405,7 @@
         private Label label2;
         private Button botonEditarCredenciales;
         private CheckBox checkBox1;
+        private Label labelBloquearIp;
         private Label label3;
         private ComboBox comboBoxNroLector;
         private TableLayoutPanel tableLayoutPanel1;

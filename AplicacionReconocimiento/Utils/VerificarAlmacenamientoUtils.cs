@@ -124,8 +124,7 @@ namespace DeportNetReconocimiento.Utils
 
             //funcion de hikControladoraGeneral que borra en bucle
 
-            Hik_Controladora_General.InstanciaControladoraGeneral.BajaMasivaClientes(listado.DeletedBranchMembers);
-
+            //Hik_Controladora_General.InstanciaControladoraGeneral.BajaMasivaClientes(listado.DeletedBranchMembers);
 
         }
 

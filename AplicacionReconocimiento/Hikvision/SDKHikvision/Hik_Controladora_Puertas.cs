@@ -1,4 +1,4 @@
-using DeportNetReconocimiento.SDK;
+using DeportNetReconocimiento.Hikvision.SDKHikvision;
 using Serilog;
 using System.Diagnostics;
 

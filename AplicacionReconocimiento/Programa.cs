@@ -37,6 +37,7 @@ namespace DeportNetReconocimiento
             apiServer = new ApiServer();
             apiServer.Start();
 
+            apiServer.CargarBd();
 
             Log.Information("Aplicacion iniciada.");
 

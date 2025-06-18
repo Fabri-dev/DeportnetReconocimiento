@@ -36,7 +36,6 @@ namespace DeportNetReconocimiento.GUI
             InitializeComponent();
             loading = new Loading();
             Hik_Resultado resultadoInicio = InstanciarPrograma(); //Instanciamos el programa con los datos de la camara
-            DispositivoEnUsoUtils.Desocupar();
 
             //estilos se leen de un archivo
             AplicarConfiguracion(ConfiguracionEstilos.LeerJsonConfiguracion());
@@ -215,33 +214,7 @@ namespace DeportNetReconocimiento.GUI
             VerificarConexionConDispositivo();
         }
 
-        public void VerificarConexionInternet()
-        {
-            int cantMaxIntentos = 2;
 
-            ConexionInternet = VerificarConexionInternetUtils.Instancia.ComprobarConexionInternet();
-
-            int nroIntentos = VerificarConexionInternetUtils.Instancia.IntentosVelocidadInternet;
-
-            //si tenemos conexion a internet y el panel de conexion esta visible, lo ocultamos
-            if (ConexionInternet && PanelSinConexion.Visible == true)
-            {
-                PanelSinConexion.Visible = false;
-                return;
-            }
-
-            //si no hay internet, levantamos un panel de offline
-            if (!ConexionInternet || nroIntentos >= cantMaxIntentos)
-            {
-
-                if (PanelSinConexion.Visible == false)
-                {
-                    PanelSinConexion.Visible = true;
-                }
-
-            }
-
-        }
 
         public async void VerificarConexionConDispositivo()
         {
@@ -285,13 +258,14 @@ namespace DeportNetReconocimiento.GUI
                 }
         }
 
-        public async void VerificarConexionInternet()
+
+        public void VerificarConexionInternet()
         {
             int cantMaxIntentos = 2;
 
-            ConexionInternet = await VerificarConexionInternetUtils.InstanciaVerificarConexionInternet.ComprobarConexionInternetConDeportnet();
+            ConexionInternet = VerificarConexionInternetUtils.Instancia.ComprobarConexionInternet();
 
-            int nroIntentos = VerificarConexionInternetUtils.InstanciaVerificarConexionInternet.IntentosVelocidadInternet;
+            int nroIntentos = VerificarConexionInternetUtils.Instancia.IntentosVelocidadInternet;
 
             //si tenemos conexion a internet y el panel de conexion esta visible, lo ocultamos
             if (ConexionInternet && PanelSinConexion.Visible == true)
@@ -300,17 +274,19 @@ namespace DeportNetReconocimiento.GUI
                 return;
             }
 
-
             //si no hay internet, levantamos un panel de offline
-            if (!ConexionInternet || nroIntentos >= cantMaxIntentos){
+            if (!ConexionInternet || nroIntentos >= cantMaxIntentos)
+            {
 
+                if (PanelSinConexion.Visible == false)
+                {
                     PanelSinConexion.Visible = true;
+                }
 
             }
-        }
-            
 
-        
+        }
+
 
         public void VerificarPanelAlmacenamiento()
         {

@@ -1,6 +1,5 @@
-using DeportNetReconocimiento.SDK;
-using Serilog;
 using DeportNetReconocimiento.Hikvision.SDKHikvision;
+using Serilog;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
 

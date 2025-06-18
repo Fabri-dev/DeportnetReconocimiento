@@ -465,9 +465,14 @@ namespace DeportNetReconocimiento.Hikvision.SDKHikvision
 
         private void ActualizarCapacidadCarasDispositivo()
         {
-            ConfiguracionEstilos configuracion = ConfiguracionEstilos.LeerJsonConfiguracion();
-            configuracion.ActualizarCapacidadMaxima();
 
+            ConfiguracionEstilos configuracion = ConfiguracionEstilos.LeerJsonConfiguracion();
+            int? cantMax = ConfiguracionGeneralUtils.ObtenerCantMaxCarasBd();
+
+            if (cantMax != null)
+            {
+                configuracion.ActualizarCapacidadMaximaConfigEstilos((int)cantMax);
+            }
         }
 
         private void ConfigurarCallbacks()
@@ -617,7 +622,7 @@ namespace DeportNetReconocimiento.Hikvision.SDKHikvision
         {
             ConfiguracionEstilos configuracion = ConfiguracionEstilos.LeerJsonConfiguracion();
             ConservarImagenSocio(configuracion, nombre, idCliente);
-            configuracion.SumarRegistroCara();
+            ConfiguracionGeneralUtils.SumarRegistroCara();
         }
 
         private static string CambiarNombreFoto(string nombreCompletoSocio, string idSocio)
@@ -704,14 +709,16 @@ namespace DeportNetReconocimiento.Hikvision.SDKHikvision
 
         private void RestarCara()
         {
-            ConfiguracionEstilos configuracion = ConfiguracionEstilos.LeerJsonConfiguracion();
-            configuracion.RestarRegistroCara();
+            ConfiguracionGeneralUtils.RestarRegistroCara();
         }
 
         private void EsperarCooldownDispositivo(int ms)
         {
             Thread.Sleep(ms);
         }
+
+
+
         //public Hik_Resultado BajaMasivaClientes(string[] ids)
         //{
         //    Hik_Resultado resultado = new Hik_Resultado();

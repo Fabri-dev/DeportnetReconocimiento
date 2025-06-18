@@ -1,5 +1,4 @@
 using DeportNetReconocimiento.Api.Services;
-using DeportNetReconocimiento.SDK;
 using Serilog;
 using DeportNetReconocimiento.Api.Data.Domain;
 using DeportNetReconocimiento.Hikvision.SDKHikvision;
