@@ -1,17 +1,19 @@
 using DeportNetReconocimiento.Api;
+using DeportNetReconocimiento.Api.BD;
+using DeportNetReconocimiento.Api.Data.Domain;
+using DeportNetReconocimiento.Api.Services;
 using DeportNetReconocimiento.GUI;
-using DeportNetReconocimiento.SDK;
-using DeportNetReconocimiento.SDKHikvision;
 using DeportNetReconocimiento.Utils;
 using Serilog;
+using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
-using static DeportNetReconocimiento.SDK.Hik_SDK;
+
 
 namespace DeportNetReconocimiento
 {
     internal class Programa
     {
-        private static ApiServer apiServer;
+        public static ApiServer apiServer;
 
         [STAThread]
         static void Main(string[] args)
@@ -26,7 +28,7 @@ namespace DeportNetReconocimiento
 
 
             Application.ApplicationExit += (s, e) => {
-                Log.Information("La aplicación se cerró.");
+                Log.Information("La aplicaciï¿½n se cerrï¿½.");
                 Log.CloseAndFlush();
                 apiServer?.Stop();
             };
@@ -53,7 +55,7 @@ namespace DeportNetReconocimiento
             .WriteTo.File(
                 "LogsDeportnetReconocimiento/log-.log",
                 rollingInterval: RollingInterval.Day,
-                retainedFileCountLimit: 60 // mantener solo últimos 60 días
+                retainedFileCountLimit: 60 // mantener solo ï¿½ltimos 60 dï¿½as
             )
             .CreateLogger();
         }

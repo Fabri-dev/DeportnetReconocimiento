@@ -1,6 +1,8 @@
-﻿using DeportNetReconocimiento.Api.Services;
+using DeportNetReconocimiento.Api.Services;
 using DeportNetReconocimiento.SDK;
 using Serilog;
+using DeportNetReconocimiento.Api.Data.Domain;
+using DeportNetReconocimiento.Hikvision.SDKHikvision;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -37,13 +39,14 @@ namespace DeportNetReconocimiento.Utils
 
         public int IntentosVelocidadInternet { get; }
 
-        public async Task<bool?> ComprobarConexionInternetConDeportnet()
+        public async Task<bool> ComprobarConexionInternetConDeportnet()
         {
             Hik_Resultado resultado = new Hik_Resultado();
-            string[] credenciales = CredencialesUtils.LeerCredenciales();
+            Credenciales credenciales = CredencialesUtils.LeerCredencialesBd();
 
-            if (credenciales == null || credenciales.Length == 0) {
-                return null; // no hay credenciales
+            if (!CredencialesUtils.CredecialesCargadasEnBd())
+            {
+                return false;
             }
 
             //verificamos y asignamos la conexion a internet
@@ -51,14 +54,13 @@ namespace DeportNetReconocimiento.Utils
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
 
-            resultado = await WebServicesDeportnet.TestearConexionDeportnet(credenciales[5], credenciales[4]);
+            resultado = await WebServicesDeportnet.TestearConexionDeportnet(credenciales.BranchToken, credenciales.BranchId);
 
             stopwatch.Stop();
 
             if (!resultado.Exito)
             {
                 Log.Error($"Error al probar la conexión {resultado.Mensaje}");
-                Console.WriteLine(resultado.Mensaje);
             }
             else
             {
@@ -135,7 +137,6 @@ namespace DeportNetReconocimiento.Utils
 
             return flag;
         }
-
 
     }
 }

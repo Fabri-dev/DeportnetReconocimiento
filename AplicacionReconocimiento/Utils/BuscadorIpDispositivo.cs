@@ -1,5 +1,6 @@
-﻿using DeportNetReconocimiento.SDK;
+using DeportNetReconocimiento.SDK;
 using Serilog;
+using DeportNetReconocimiento.Hikvision.SDKHikvision;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
 
@@ -75,5 +76,6 @@ namespace DeportNetReconocimiento.Utils
 
             return ips;
         }
+
     }
 }

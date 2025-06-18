@@ -1,14 +1,14 @@
-using DeportNetReconocimiento.Modelo;
 using DeportNetReconocimiento.Properties;
 using DeportNetReconocimiento.SDK;
 using Serilog;
+using DeportNetReconocimiento.Utils.Modelo;
 using System.ComponentModel;
 using System.Drawing.Design;
 using System.Numerics;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Windows.Forms.Design;
-using static DeportNetReconocimiento.Modelo.BooleanToggleEditor;
+using static DeportNetReconocimiento.Utils.Modelo.BooleanToggleEditor;
 
 
 
@@ -126,7 +126,7 @@ namespace DeportNetReconocimiento.Utils
         public Color ColorMensajeAccesoConcedido { get; set; }
 
         [Category("Acceso")]
-        [DisplayName("Color de fondo del campo donde se muestra la informacion del cliente")]
+        [DisplayName("Color de fondo campo informacion cliente")]
         [Description("Selecciona el color de fondo para el campo donde se muestra la informacion del cliente.")]
         [JsonConverter(typeof(ColorJsonConverter))]
         public Color ColorFondoInformacionCliente { get; set; }
@@ -257,10 +257,10 @@ namespace DeportNetReconocimiento.Utils
             get => porcentajeAlertaCapacidad;
             set
             {
-                if (value < 0 || value > 100)
+                if (value < 75 || value > 95)
                 {
                     MessageBox.Show(
-                        "El porcentaje debe estar entre el rango de 1 y 100",
+                        "El porcentaje debe estar entre el rango de 75 y 95",
                         "Error de validación",
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Error
@@ -375,7 +375,7 @@ namespace DeportNetReconocimiento.Utils
         public ConfiguracionEstilos()
         {
             // General
-            ColorFondo = Color.Silver;
+            ColorFondo = Color.DimGray;
             TiempoDeRetrasoAltaCliente = 5;
 
             // Logo 
@@ -385,21 +385,21 @@ namespace DeportNetReconocimiento.Utils
             ColorFondoLogo = Color.DimGray;
 
             // Bienvenida
-            ColorFondoMensajeBienvenida = Color.DarkGray;
+            ColorFondoMensajeBienvenida = Color.DimGray;
             ColorMensajeBienvenida = Color.Black;
-            MensajeBienvenida = "Bienvenido a DeportNet!";
-            FuenteTextoMensajeAcceso = new Font("Arial Rounded MT Bold", 36, FontStyle.Italic);
+            MensajeBienvenida = "Bienvenido a Gimnasio DeportNet!";
+            FuenteTextoMensajeAcceso = new Font("Arial Rounded MT Bold", 48, FontStyle.Regular);
 
             // Mensaje de acceso
 
-            ColorMensajeAccesoDenegado = Color.Red;
-            ColorMensajeAccesoConcedido = Color.Green;
+            ColorMensajeAccesoDenegado = Color.DarkRed;
+            ColorMensajeAccesoConcedido = Color.DarkGreen;
 
             // Campos de informacion
-            ColorTextoInformacionCliente = Color.Black;
-            ColorFondoInformacionCliente = Color.WhiteSmoke;
-            FuenteTextoInformacionCliente = new Font("Arial Rounded MT Bold", 20, FontStyle.Regular);
-            TiempoDeMuestraDeDatos = 5;
+            ColorTextoInformacionCliente = Color.White;
+            ColorFondoInformacionCliente = Color.DimGray;
+            FuenteTextoInformacionCliente = new Font("Arial Rounded MT Bold", 40, FontStyle.Regular);
+            TiempoDeMuestraDeDatos = 7;
         
             // Imagen Cliente
             ColorFondoImagen = Color.DarkGray;
@@ -413,10 +413,12 @@ namespace DeportNetReconocimiento.Utils
             SonidoPregunta = new Sonido(Path.Combine(rutaRecursos, "sonido-pregunta.mp3"));
             SonidoBienvenida = new Sonido();
 
+
+
             // Campos de estadísticas
             CarasRegistradas = 1;
             CapacidadMaximaDispositivo = 500;
-            PorcentajeAlertaCapacidad = 70.0f;
+            PorcentajeAlertaCapacidad = 80.0f;
 
             // Configuraciones apertura
             MetodoApertura = ".exe";
@@ -499,23 +501,15 @@ namespace DeportNetReconocimiento.Utils
             return configuracionEstilos;
         }
 
-        public void SumarRegistroCara()
+        public void ActualizarCapacidadActualConfigEstilos(int carasRegistradas)
         {
-            
-            CarasRegistradas += 1;
+            CarasRegistradas = carasRegistradas;
             GuardarJsonConfiguracion(this);
         }
 
-        public void RestarRegistroCara()
+        public void ActualizarCapacidadMaximaConfigEstilos(int capacidadMaxima)
         {
-            CarasRegistradas -= 1;
-            GuardarJsonConfiguracion(this);
-        }
-
-        public void ActualizarCapacidadMaxima()
-        {
-            int capacidad = Hik_Controladora_General.InstanciaControladoraGeneral.ObtenerCapacidadCarasDispositivo();
-            //CapacidadMaximaDispositivo = 1500;
+            CapacidadMaximaDispositivo = capacidadMaxima;
             GuardarJsonConfiguracion(this);
         }
 
