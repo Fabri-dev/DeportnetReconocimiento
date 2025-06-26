@@ -604,7 +604,6 @@ namespace DeportNetReconocimiento.GUI
             {
                 return;
             }
-            Console.WriteLine("Reproducimos sonido");
 
             ReproductorSonidos.InstanciaReproductorSonidos.ReproducirSonido(sonido);
 

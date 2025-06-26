@@ -2,6 +2,7 @@
 using DeportNetReconocimiento.Hikvision.SDKHikvision;
 using DeportNetReconocimiento.SDK;
 using DeportNetReconocimiento.Utils;
+using Serilog;
 using System.Dynamic;
 using System.Net;
 using System.Security.Cryptography;
@@ -56,7 +57,6 @@ namespace DeportNetReconocimiento.Api.Services
             }
 
             string json = JsonSerializer.Serialize(data);
-            Console.WriteLine("JSON serializado a enviar:\n" + json);
 
             return await FetchInformacion(json, urlEntradaClienteTest, HttpMethod.Post);
         }
@@ -141,11 +141,8 @@ namespace DeportNetReconocimiento.Api.Services
         public static async Task<Hik_Resultado> TestearConexionDeportnet(string tokenSucursal, string idSucursal)
         {
 
-            Console.WriteLine(tokenSucursal + " " + idSucursal);
             Hik_Resultado resultado = new Hik_Resultado();
-
             object dataEnviar = new { };
-
             dataEnviar = new { memberId = 1, activeBranchId = idSucursal };
             
             
@@ -286,7 +283,7 @@ namespace DeportNetReconocimiento.Api.Services
 
             using HttpClient client = new HttpClient
             {
-                Timeout = TimeSpan.FromSeconds(10) // o 5, según prefieras
+                //Timeout = TimeSpan.FromSeconds(30) // o 5, según prefieras
             };
 
             string token = CredencialesUtils.LeerCredencialesBd().BranchToken;//CredencialesUtils.LeerCredencialEspecifica(5); //"H7gVA3r89jvaMuDd";
@@ -294,7 +291,7 @@ namespace DeportNetReconocimiento.Api.Services
           
             if (string.IsNullOrWhiteSpace(token))
             {
-                Console.WriteLine("ERROR: No se encontró el token de la sucursal");
+                Log.Error("No se encontró el token de la sucursal");
                 return "ERROR: No se encontró el token de la sucursal";
             }
 
@@ -337,15 +334,11 @@ namespace DeportNetReconocimiento.Api.Services
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Error al hacer fetch de informacion: "+ex.Message);
-
+                Log.Error($"Error al hacer fetch de informacion: {ex.Message}");
             }
 
             return resultado.Mensaje;
         }
-
-
-
 
     }
 }

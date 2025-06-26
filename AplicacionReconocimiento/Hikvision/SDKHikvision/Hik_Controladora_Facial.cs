@@ -445,7 +445,6 @@ namespace DeportNetReconocimiento.Hikvision.SDKHikvision
 
             if (SetFaceCfgHandle == -1)
             {
-
                 resultado.ActualizarResultado(false, "Error al establecer la cara", Hik_SDK.NET_DVR_GetLastError().ToString());
             }
             else

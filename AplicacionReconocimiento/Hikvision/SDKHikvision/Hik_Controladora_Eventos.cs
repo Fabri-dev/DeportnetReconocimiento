@@ -245,6 +245,7 @@ namespace DeportNetReconocimiento.Hikvision.SDKHikvision
                 if (string.IsNullOrWhiteSpace(response))
                 {
                     Log.Error("Respuesta nula o vacia de deportnet. No se pudo procesar la respuesta.");
+                    DispositivoEnUsoUtils.Desocupar();
                     return;
                 }
 

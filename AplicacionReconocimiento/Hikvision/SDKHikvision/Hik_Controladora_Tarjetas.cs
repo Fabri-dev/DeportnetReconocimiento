@@ -73,6 +73,7 @@ namespace DeportNetReconocimiento.Hikvision.SDKHikvision
             }
             else
             {
+                
                 resultado.ActualizarResultado(false, "Error al establecer la tarjeta", Hik_SDK.NET_DVR_GetLastError().ToString());
 
             }

@@ -5,6 +5,7 @@ using DeportNetReconocimiento.Api.Services;
 using DeportNetReconocimiento.Api.Services.Interfaces;
 using DeportNetReconocimiento.Utils;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
 
 namespace DeportNetReconocimiento.Api.Controllers
 {
@@ -35,8 +36,7 @@ namespace DeportNetReconocimiento.Api.Controllers
            
              detalle = deportnetReconocimientoService.AltaFacialCliente(new AltaFacialClienteRequest(idCliente, idSucursal, nombreCliente));
 
-
-                return Ok(detalle);
+            return Ok(detalle);
         }
 
         [HttpGet("baja-facial-cliente")]
