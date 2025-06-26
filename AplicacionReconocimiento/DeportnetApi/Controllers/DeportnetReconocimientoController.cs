@@ -33,7 +33,7 @@ namespace DeportNetReconocimiento.Api.Controllers
                 return BadRequest("El cuerpo de la solicitud no puede estar vacío.");
             }
            
-            string detalle = deportnetReconocimientoService.AltaFacialCliente(new AltaFacialClienteRequest(idCliente, idSucursal, nombreCliente));
+             detalle = deportnetReconocimientoService.AltaFacialCliente(new AltaFacialClienteRequest(idCliente, idSucursal, nombreCliente));
 
 
                 return Ok(detalle);

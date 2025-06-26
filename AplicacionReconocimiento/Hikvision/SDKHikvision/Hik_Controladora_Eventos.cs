@@ -27,7 +27,7 @@ namespace DeportNetReconocimiento.Hikvision.SDKHikvision
         }
 
 
-        public static Hik_Controladora_Eventos InstanciaControladoraEventos
+        public static Hik_Controladora_Eventos Instancia
         {
             get
             {
@@ -74,7 +74,7 @@ namespace DeportNetReconocimiento.Hikvision.SDKHikvision
             if (this == null)
             {
                 Log.Information("Clase Hik_Controladora_Eventos no instanciada. La instancio de nuevo");
-                Hik_Controladora_Eventos instancia = InstanciaControladoraEventos;
+                Hik_Controladora_Eventos instancia = Instancia;
                 return;
             }
 
@@ -332,7 +332,7 @@ namespace DeportNetReconocimiento.Hikvision.SDKHikvision
             struSetupAlarmParam.byAlarmInfoType = 1;
             struSetupAlarmParam.byDeployType = 0;
 
-            NET_DVR_SetupAlarmChan_V41(Hik_Controladora_General.InstanciaControladoraGeneral.IdUsuario, ref struSetupAlarmParam);
+            NET_DVR_SetupAlarmChan_V41(Hik_Controladora_General.Instancia.IdUsuario, ref struSetupAlarmParam);
         }
 
         private Evento AlarmInfoToEvent(ref NET_DVR_ALARMER pAlarmer, nint pAlarmInfo, uint dwBufLen, nint pUser)

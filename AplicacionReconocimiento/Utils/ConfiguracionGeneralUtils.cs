@@ -21,7 +21,7 @@ namespace DeportNetReconocimiento.Utils
                 "",
                 null,
                 null,
-                Hik_Controladora_General.InstanciaControladoraGeneral.ObtenerCapacidadCarasDispositivo(),
+                Hik_Controladora_General.Instancia.ObtenerCapacidadCarasDispositivo(),
                 1,
                 null
                 );

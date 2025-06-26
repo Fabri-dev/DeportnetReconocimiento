@@ -2,6 +2,7 @@
 using DeportNetReconocimiento.Api.Data.Dtos.Response;
 using DeportNetReconocimiento.Api.Services.Interfaces;
 using DeportNetReconocimiento.Hikvision.SDKHikvision;
+using DeportNetReconocimiento.SDK;
 using DeportNetReconocimiento.Utils;
 
 namespace DeportNetReconocimiento.Api.Services
@@ -18,7 +19,7 @@ namespace DeportNetReconocimiento.Api.Services
         {
             EnUso = false;
             idSucursal = null;
-            hik_Controladora = Hik_Controladora_General.InstanciaControladoraGeneral;
+            hik_Controladora = Hik_Controladora_General.Instancia;
 
             int.TryParse(CredencialesUtils.LeerCredencialEspecifica(4), out int idSucursalOut);
             idSucursal = idSucursalOut;
@@ -208,7 +209,7 @@ namespace DeportNetReconocimiento.Api.Services
                 );
 
                 Console.WriteLine("Hubo un Error en alta facial: " + resAlta.Mensaje);
-                DispositivoEnUsoUtils.Liberar();
+                DispositivoEnUsoUtils.Desocupar();
 
                 return;
             }
@@ -230,7 +231,7 @@ namespace DeportNetReconocimiento.Api.Services
             
             
             EnUso = false;
-            DispositivoEnUsoUtils.Liberar();
+            DispositivoEnUsoUtils.Desocupar();
         }
 
         public string BajaFacialCliente(BajaFacialClienteRequest clienteRequest)

@@ -10,7 +10,7 @@ using Serilog;
 using System.Windows.Forms;
 using DeportNetReconocimiento.Utils.Modelo;
 using System.Diagnostics;
-using System.Runtime.InteropServices;
+using DeportNetReconocimiento.SDK;
 
 
 namespace DeportNetReconocimiento.GUI
@@ -27,6 +27,7 @@ namespace DeportNetReconocimiento.GUI
         private bool ObligarCerrarPrograma = false;
         private bool buscandoIp = false;
         private bool verificandoEstado = false;
+        private Loading loading = new Loading();
 
         private WFPrincipal()
         {
@@ -90,7 +91,7 @@ namespace DeportNetReconocimiento.GUI
                 return resultado;
             }
 
-            resultado = Hik_Controladora_General.InstanciaControladoraGeneral.InicializarPrograma(credenciales.Username, credenciales.Password, credenciales.Port, credenciales.Ip);
+            resultado = Hik_Controladora_General.Instancia.InicializarPrograma(credenciales.Username, credenciales.Password, credenciales.Port, credenciales.Ip);
 
             if (resultado.Exito)
             {
@@ -135,11 +136,11 @@ namespace DeportNetReconocimiento.GUI
                             return;
                         }
 
-                        loading.Show();
                         this.MinimizarVentana();
                         trayReconocimiento.Visible = false; // Ocultamos el icono de la bandeja del sistema
 
                         Loading loading = new Loading();
+                        loading.Show();
 
                         Hik_Resultado resultadoLogin = await Task.Run(() => BuscadorIpDispositivo.ObtenerIpDispositivo(credenciales.Port, credenciales.Username, credenciales.Password));
 
@@ -234,7 +235,7 @@ namespace DeportNetReconocimiento.GUI
             Hik_Resultado resultadoInstanciar = new Hik_Resultado();
 
             //Se espera al resultado de la función verificarEstadoDispositivo 
-            bool estadoConexionDispositivo = await Task.Run(() => Hik_Controladora_General.InstanciaControladoraGeneral.VerificarEstadoDispositivo());
+            bool estadoConexionDispositivo = await Task.Run(() => Hik_Controladora_General.Instancia.VerificarEstadoDispositivo());
 
             //Log.Information("Verificamos el estado de la conexion con el dispositivo. Estado: " + estadoConexionDispositivo);
 
@@ -265,7 +266,7 @@ namespace DeportNetReconocimiento.GUI
                     Log.Information("Hubo conexion exitosa con el dispositivo, reiniciamos el contador y volvemos a iniciar el timer si estaba apagado");
                     intentosConexionADispositivo = 0;
 
-                    Hik_Controladora_Eventos.InstanciaControladoraEventos.InstanciarMsgCallback(); //TODO: Verificar el nombre
+                    Hik_Controladora_Eventos.Instancia.InstanciarMsgCallback(); //TODO: Verificar el nombre
                     ActualizarTextoHeaderLabel(ConfiguracionEstilos.LeerJsonConfiguracion().MensajeBienvenida, ConfiguracionEstilos.LeerJsonConfiguracion().ColorFondoMensajeBienvenida);
                     ReactivarTimer();
                 }

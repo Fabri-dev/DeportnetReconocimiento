@@ -5,6 +5,7 @@ using DeportNetReconocimiento.Api.Data.Dtos.Dx.Socios;
 using DeportNetReconocimiento.Api.Services;
 using DeportNetReconocimiento.GUI;
 using DeportNetReconocimiento.Hikvision.SDKHikvision;
+using DeportNetReconocimiento.SDK;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -124,7 +125,7 @@ namespace DeportNetReconocimiento.Utils
 
             //funcion de hikControladoraGeneral que borra en bucle
 
-            //Hik_Controladora_General.InstanciaControladoraGeneral.BajaMasivaClientes(listado.DeletedBranchMembers);
+            //Hik_Controladora_General.Instacia.BajaMasivaClientes(listado.DeletedBranchMembers);
 
         }
 

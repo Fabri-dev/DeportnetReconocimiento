@@ -2,6 +2,7 @@
 using DeportNetReconocimiento.Api.BD;
 using DeportNetReconocimiento.Api.Data.Domain;
 using DeportNetReconocimiento.GUI;
+using DeportNetReconocimiento.SDK;
 using DeportNetReconocimiento.Utils;
 using Serilog;
 using System.IO;
@@ -147,7 +148,7 @@ namespace DeportNetReconocimiento.Hikvision.SDKHikvision
             }
 
             // cambiar por log de serilog
-            Hik_Resultado.EscribirLog();
+            //Hik_Resultado.EscribirLog();
 
             return resultado;
         }
@@ -362,45 +363,6 @@ namespace DeportNetReconocimiento.Hikvision.SDKHikvision
             return capacidad;
         }
 
-        public bool VerificarEstadoDispositivo()
-        {
-            nint pInBuf;
-            int nSize;
-            int iLastErr = 17;
-            bool conectado = false;
-            pInBuf = nint.Zero;
-            nSize = 0;
-
-            int XML_ABILITY_OUT_LEN = 3 * 1024 * 1024;
-            nint pOutBuf = Marshal.AllocHGlobal(XML_ABILITY_OUT_LEN);
-
-            if (!Hik_SDK.NET_DVR_GetDeviceAbility(InstanciaControladoraGeneral.IdUsuario, 0, pInBuf, (uint)nSize, pOutBuf, (uint)XML_ABILITY_OUT_LEN))
-            {
-                iLastErr = (int)Hik_SDK.NET_DVR_GetLastError();
-
-                //si perdio conexión
-                if (iLastErr == 17)
-                {
-                    Console.WriteLine("Se perdio la conexion con el dispositivo");
-                    return conectado;
-                }
-
-            }
-
-            Marshal.FreeHGlobal(pInBuf);
-            Marshal.FreeHGlobal(pOutBuf);
-
-            if (iLastErr == 1000)
-            {
-                // Console.WriteLine("Conectado");
-                conectado = true;
-            }
-            else
-            {
-                //Console.WriteLine("Desconectado");
-            }
-            return conectado;
-        }
 
         private bool VerificarCapacidad(XmlDocument resultadoXML, string capacidad)
         {
@@ -459,7 +421,7 @@ namespace DeportNetReconocimiento.Hikvision.SDKHikvision
                     //si perdio conexión
                     if (iLastErr == 17)
                     {
-                        Log.Error("Se perdio la conexion con el dispositivo en VerificarEstadoDispositivo.");
+                        Log.Error("Se perdio la conexion con el dispositivo en VerificarEstadoDisposityivo.");
                         return conectado;
                     }
                 }
@@ -515,7 +477,7 @@ namespace DeportNetReconocimiento.Hikvision.SDKHikvision
         private void InicializarInstanciasControladoras()
         {
             //setteamos el callback para obtener los ids de los usuarios
-            hik_Controladora_Eventos = Hik_Controladora_Eventos.InstanciaControladoraEventos;
+            hik_Controladora_Eventos = Hik_Controladora_Eventos.Instancia;
             hik_Controladora_Facial = Hik_Controladora_Facial.Instancia;
             hik_Controladora_Tarjetas = Hik_Controladora_Tarjetas.Instancia;
         }

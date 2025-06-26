@@ -4,6 +4,7 @@ using DeportNetReconocimiento.Api.Services;
 using DeportNetReconocimiento.GUI;
 using DeportNetReconocimiento.Hikvision.SDKHikvision;
 using DeportNetReconocimiento.Properties;
+using DeportNetReconocimiento.SDK;
 using DeportNetReconocimiento.Utils;
 using System.Diagnostics;
 using System.Text.RegularExpressions;

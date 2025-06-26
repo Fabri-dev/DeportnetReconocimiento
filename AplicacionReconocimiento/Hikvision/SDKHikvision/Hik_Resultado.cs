@@ -1,5 +1,6 @@
 ﻿
 
+using DeportNetReconocimiento.Hikvision.SDKHikvision;
 using Serilog;
 
 namespace DeportNetReconocimiento.SDK

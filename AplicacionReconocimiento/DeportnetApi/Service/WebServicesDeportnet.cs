@@ -1,5 +1,6 @@
 ﻿using DeportNetReconocimiento.Api.Data.Dtos.Response;
 using DeportNetReconocimiento.Hikvision.SDKHikvision;
+using DeportNetReconocimiento.SDK;
 using DeportNetReconocimiento.Utils;
 using System.Dynamic;
 using System.Net;
