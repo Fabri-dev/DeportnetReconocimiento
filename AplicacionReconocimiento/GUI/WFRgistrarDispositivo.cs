@@ -194,8 +194,8 @@ namespace DeportNetReconocimiento
             }
             seClickeoBotonLogin = true;
 
-
-            Hik_Resultado resultadoLogin = Hik_Controladora_General.InstanciaControladoraGeneral.InicializarPrograma(textBoxUserName.Text, textBoxPassword.Text, textBoxPort.Text, textBoxDeviceAddress.Text);
+            
+            Hik_Resultado resultadoLogin = Hik_Controladora_General.Instancia.InicializarPrograma(textBoxUserName.Text, textBoxPassword.Text, textBoxPort.Text, textBoxDeviceAddress.Text);
 
             if (!resultadoLogin.Exito)
             {

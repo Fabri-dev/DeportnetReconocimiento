@@ -8,7 +8,7 @@ namespace DeportNetReconocimiento.Hikvision.SDKHikvision
     internal class Hik_Controladora_Puertas
     {
         //atributos
-        private static Hik_Controladora_Puertas? instanciaControladoraPuertas;
+        private static Hik_Controladora_Puertas? instancia;
 
         private Hik_Controladora_Puertas()
         {
@@ -16,15 +16,15 @@ namespace DeportNetReconocimiento.Hikvision.SDKHikvision
         }
 
         //propiedades
-        public static Hik_Controladora_Puertas InstanciaControladoraPuertas
+        public static Hik_Controladora_Puertas Instancia
         {
             get
             {
-                if (instanciaControladoraPuertas == null)
+                if (instancia == null)
                 {
-                    instanciaControladoraPuertas = new Hik_Controladora_Puertas();
+                    instancia = new Hik_Controladora_Puertas();
                 }
-                return instanciaControladoraPuertas;
+                return instancia;
             }
         }
 
@@ -32,8 +32,8 @@ namespace DeportNetReconocimiento.Hikvision.SDKHikvision
         public static Hik_Resultado OperadorPuerta(int operacion)
         {
             Hik_Resultado resultado = new Hik_Resultado();
-            int idUsuario = Hik_Controladora_General.InstanciaControladoraGeneral.IdUsuario;
-            if (idUsuario == -1)
+            int idUsuario = Hik_Controladora_General.Instancia.IdUsuario;
+            if(idUsuario == -1)
             {
                 resultado.ActualizarResultado(false, "No se ha logueado el usuario.", Hik_SDK.NET_DVR_GetLastError().ToString());
                 return resultado;

@@ -513,6 +513,13 @@ namespace DeportNetReconocimiento.Utils
             GuardarJsonConfiguracion(this);
         }
 
+        public void ActualizarCapacidadMaxima()
+        {
+            int capacidad = Hik_Controladora_General.Instancia.ObtenerCapacidadCarasDispositivo();
+            //CapacidadMaximaDispositivo = 1500;
+            GuardarJsonConfiguracion(this);
+        }
+
         public void CambiarEstadoBloqueoIp()
         {
             BloquearIp = !BloquearIp;

@@ -17,9 +17,6 @@ namespace DeportNetReconocimiento.GUI
 {
     public partial class WFPrincipal : Form
     {
-        private static Hik_Controladora_General? hik_Controladora_General;
-
-
         private static WFPrincipal? instancia;
         private ConfiguracionEstilos configuracionEstilos;
         private bool ignorarCierre = false;
@@ -29,12 +26,11 @@ namespace DeportNetReconocimiento.GUI
         private static int intentosConexionADispositivo = 0;
         private bool ObligarCerrarPrograma = false;
         private bool buscandoIp = false;
-        private Loading loading;
+        private bool verificandoEstado = false;
 
         private WFPrincipal()
         {
             InitializeComponent();
-            loading = new Loading();
             Hik_Resultado resultadoInicio = InstanciarPrograma(); //Instanciamos el programa con los datos de la camara
 
             //estilos se leen de un archivo
@@ -124,7 +120,6 @@ namespace DeportNetReconocimiento.GUI
                         Log.Error("No se va a buscar nuevas Ips debido a que la configuracion de bloquear IP esta activa. No se pudo conectar con el dispositivo, verifique si la ip es correcta o si el dispositivo esta conectado a la red.");
                         return;
                     }
-                    Console.WriteLine($"\nBuscar ip {buscandoIp}\n");
 
                     if (!buscandoIp && intentosConexionADispositivo <= 2)
                     {
@@ -144,6 +139,7 @@ namespace DeportNetReconocimiento.GUI
                         this.MinimizarVentana();
                         trayReconocimiento.Visible = false; // Ocultamos el icono de la bandeja del sistema
 
+                        Loading loading = new Loading();
 
                         Hik_Resultado resultadoLogin = await Task.Run(() => BuscadorIpDispositivo.ObtenerIpDispositivo(credenciales.Port, credenciales.Username, credenciales.Password));
 
@@ -206,15 +202,32 @@ namespace DeportNetReconocimiento.GUI
             }
         }
 
-
         //Funcion que se ejecuta en cada TICK del timer
-        public async void VerificarEstadoDispositivoAsync(object sender, EventArgs e)
+        public async void VerificarEstadoGeneralAsync(object sender, EventArgs e)
         {
-            VerificarConexionInternet();
-            VerificarConexionConDispositivo();
+                        if (verificandoEstado)
+                return;
+
+            if (!DispositivoEnUsoUtils.EstaLibre())
+                return;
+
+            verificandoEstado = true;
+
+            try
+            {
+                VerificarConexionInternet();
+                VerificarConexionConDispositivo();
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"Error en VerificarEstadoDispositivoAsync: {ex.Message}");
+            }
+            finally
+            {
+                verificandoEstado = false;
+            }
         }
-
-
+        
 
         public async void VerificarConexionConDispositivo()
         {
@@ -258,8 +271,10 @@ namespace DeportNetReconocimiento.GUI
                 }
         }
 
+            
 
-        public void VerificarConexionInternet()
+
+        public async Task VerificarConexionInternet()
         {
             int cantMaxIntentos = 2;
 
@@ -389,12 +404,9 @@ namespace DeportNetReconocimiento.GUI
         {
             string titulo = "";
             string mensaje = "";
-            Hik_Resultado resultado;
+            Hik_Resultado resultado = new Hik_Resultado();
 
-
-            //Console.WriteLine("Estado json:" + json.Estado);
             AnalizarMaximizarVentana(json.Estado);
-
 
             switch (json.Estado)
             {
@@ -431,8 +443,10 @@ namespace DeportNetReconocimiento.GUI
                     {
                         Console.WriteLine("Abro con Hikvision");
                         resultado = Hik_Controladora_Puertas.OperadorPuerta(1);
-                        Console.WriteLine("Resultado de apertura con Hikvision: \n " + resultado);
+                        Log.Information("Resultado de apertura con Hikvision: " + resultado.Exito);
                     }
+
+                    
 
                     titulo = "Bienvenido/a " + ConvertidorTextoUtils.PrimerLetraMayuscula(json.Nombre) + " " + ConvertidorTextoUtils.PrimerLetraMayuscula(json.Apellido);
                     mensaje = ConvertidorTextoUtils.LimpiarTextoHtml(json.MensajeAcceso);
@@ -449,8 +463,15 @@ namespace DeportNetReconocimiento.GUI
                     break;
             }
 
+
             HeaderLabel.Text = titulo;
             textoInformacionCliente.Text = mensaje;
+
+            if (json.Estado != "Q")
+            {
+                //Fin evento de acceso, por lo tanto lo desocupo
+                DispositivoEnUsoUtils.Desocupar();
+            }
         }
 
 
@@ -461,7 +482,7 @@ namespace DeportNetReconocimiento.GUI
                 int intervalo = 20000;//20 segundos
                 timerConexion = new System.Windows.Forms.Timer();
                 timerConexion.Interval = intervalo;
-                timerConexion.Tick += VerificarEstadoDispositivoAsync;
+                timerConexion.Tick += VerificarEstadoGeneralAsync;
                 Log.Information("Se crea un timer que verifica la conexión con el dispositivo cada 20 segundos");
 
             }
@@ -507,7 +528,7 @@ namespace DeportNetReconocimiento.GUI
         {
             Image imagen = Resources.avatarPredeterminado;
             //Se obtiene la foto del cliente
-            Hik_Resultado resultado = Hik_Controladora_Facial.ObtenerInstancia.ObtenerCara(nroLector, idCliente);
+            Hik_Resultado resultado = Hik_Controladora_Facial.Instancia.ObtenerCara(nroLector, idCliente);
 
 
             if (resultado.Exito)
@@ -535,7 +556,7 @@ namespace DeportNetReconocimiento.GUI
         {
             Image imagen = null;
 
-            Hik_Resultado resultado = Hik_Controladora_Facial.ObtenerInstancia.CapturarCara();
+            Hik_Resultado resultado = Hik_Controladora_Facial.Instancia.CapturarCara();
             if (resultado.Exito)
             {
                 String ruta = Path.Combine(Directory.GetCurrentDirectory(), "captura.jpg");
@@ -691,7 +712,7 @@ namespace DeportNetReconocimiento.GUI
                 }
                 catch (TaskCanceledException ex)
                 {
-                    Console.WriteLine("Se cancelo el timer minimizar");
+                    Console.WriteLine("Se cancelo el timer minimizar: "+ ex.Message);
                 }
             }
 
